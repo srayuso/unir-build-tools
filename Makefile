@@ -1,5 +1,6 @@
 JENKINS_DOCKER_AGENT_SECRET := 23d26b0920a09d45e01b599897e206334051dd267a27a9cbd42a07ba8e95b0e5
 JENKINS_MAVEN_AGENT_SECRET := e5c1844b4d36b785474c0edac1cd98cbbc29ca9f4b7c458190689815b9eb143e
+GITLAB_TOKEN := 1Lrw11yzWRrsaiZLxwci
 
 .PHONY: all $(MAKECMDGOALS)
 
@@ -23,3 +24,23 @@ stop-jenkins:
 	docker network rm jenkins || true
 
 
+start-gitlab:
+	docker network create gitlab || true
+	docker run -d --rm --stop-timeout 60 --network gitlab --hostname localhost --name gitlab-server -p 80:80 -p 443:443 -p 2222:22 --volume gitlab_config:/etc/gitlab --volume gitlab_logs:/var/log/gitlab --volume gitlab_data:/var/opt/gitlab gitlab/gitlab-ce:latest
+	sleep 90
+	docker run -d --rm --network gitlab --name gitlab-runner --volume gitlab-runner-config:/etc/gitlab-runner gitlab/gitlab-runner
+	docker run --rm --network gitlab --volume gitlab-runner-config:/etc/gitlab-runner gitlab/gitlab-runner register --non-interactive --executor "shell" --url "http://gitlab-server/" --registration-token "$(GITLAB_TOKEN)" --description "runner01" --tag-list "ssh" --locked="false" --access-level="not_protected"
+
+stop-gitlab:
+	docker stop gitlab-server || true
+	docker stop gitlab-runner || true
+	docker network rm gitlab || true
+
+start-nexus:
+	docker run -d --rm --name nexus-server -p 8081:8081 sonatype/nexus3
+
+nexus-password:
+	docker exec nexus-server cat /nexus-data/admin.password
+
+stop-nexus:
+	docker stop --time=120 nexus-server
