@@ -8,6 +8,9 @@ build-agents:
 	docker build -t jenkins-agent-docker ./jenkins-agent-docker
 	docker build -t jenkins-agent-maven ./jenkins-agent-maven
 
+start-simple-jenkins:
+	docker run -d --rm --stop-timeout 60 --name jenkins-server --volume jenkins-data:/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts
+
 start-jenkins:
 	docker network create jenkins || true
 	docker run -d --rm --stop-timeout 60 --network jenkins --name jenkins-docker --privileged --network-alias docker  --env DOCKER_TLS_CERTDIR=/certs  --volume jenkins-docker-certs:/certs/client  --volume jenkins-data:/var/jenkins_home -p 2376:2376 -p 80:80 docker:dind
@@ -40,7 +43,7 @@ start-nexus:
 	docker run -d --rm --name nexus-server -p 8081:8081 sonatype/nexus3
 
 nexus-password:
-	docker exec nexus-server cat /nexus-data/admin.password
+	docker exec nexus-server cat /nexus-data/admin.password && echo ""
 
 stop-nexus:
 	docker stop --time=120 nexus-server
