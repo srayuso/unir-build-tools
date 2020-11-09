@@ -1,4 +1,4 @@
-# Repo para EIEC - Máster DevOps - UNIR
+# Repo para EIEC - DevOps - UNIR
 
 Este repositorio incluye comandos para facilitar el arranque de servidores de Jenkins, GitLab y Nexus. El despliegue de una instancia local de GitLab se incluye como ejemplo, ya que el temario cubre el uso de la oferta SaaS.
 
