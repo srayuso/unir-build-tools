@@ -13,7 +13,10 @@ Los comandos del Makefile funcionarán en Linux y MacOS. En caso de usar Windows
 - Crea 2 agentes:
   - `agent01`, con _Remote root directory_ `/var/jenkins` y etiqueta `docker`.
   - `agent02`, con _Remote root directory_ `/var/jenkins` y etiqueta `maven`.
-- Copia el secreto del agente 1 en la variable `JENKINS_DOCKER_AGENT_SECRET` del `Makefile` y el secreto del agente 2 en la variable `JENKINS_MAVEN_AGENT_SECRET`.
+- Copia el secreto del agente 1 en la variable `JENKINS_DOCKER_AGENT_SECRET` del `Makefile` y el secreto del agente 2 en la variable `JENKINS_MAVEN_AGENT_SECRET`. Los secretos están disponibles en la página del agente. Jenkins muestra el código que hay que ejecutar para arrancar el servicio del agente, y el secreto está embebido en estos comandos, tal como se muestra la imagen.
+
+![agent-secret](/assets/agent-secret.jpg)
+
 - Ejecuta `make stop-jenkins`, seguido de `make start-jenkins`.
 - Cuando termines de trabajar con Jenkins, ejecuta `make stop-jenkins`.
 
