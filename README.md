@@ -6,6 +6,7 @@ Los comandos del Makefile funcionarán en Linux y MacOS. En caso de usar Windows
 
 ## Guía rápida para Jenkins
 
+- Ejecuta `make build-agents` para construir las imágenes de los agentes.
 - Ejecuta `make start-jenkins`. El arrange de los agentes fallará.
 - Ejecuta `make jenkins-password` y copia la password al portapapeles.
 - Accede a http://localhost:8080 y usa la password anterior.
